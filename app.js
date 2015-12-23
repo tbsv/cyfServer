@@ -6,7 +6,9 @@ var bodyParser = require('body-parser');
 var db = require('./models/db');
 var users = require('./routes/users');
 var vehicles = require('./routes/vehicles');
-var vehicleService = require('./services/vehicleService');
+var readiService = require('./services/readiService');
+var CronJobVehicles = require('cron').CronJob;
+var CronJobTours = require('cron').CronJob;
 
 var app = express();
 
@@ -18,8 +20,17 @@ app.use(cookieParser());
 app.use('/users', users);
 app.use('/vehicles', vehicles);
 
-// Update all vehicles
-vehicleService.getAllVehicles();
+// Update all vehicles (every 10sec) TODO: define interval
+new CronJobVehicles('*/10 * * * * *', function() {
+  console.log('getAllVehicles from ReADiConnect...');
+  readiService.getAllVehicles();
+}, null, true, 'Europe/Berlin');
+
+// Update all tours (every 30sec) TODO: define interval
+new CronJobTours('*/30 * * * * *', function() {
+  console.log('getAllTours from ReADiConnect...');
+  readiService.getAllTours();
+}, null, true, 'Europe/Berlin');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,6 +62,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
