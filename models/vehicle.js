@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var VehicleSchema = new Schema({
     vin:    String,
-    userid: String
+    userId: String
 });
 
 VehicleSchema.statics = {

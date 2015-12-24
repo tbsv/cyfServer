@@ -20,4 +20,3 @@ exports.show = function(req, res){
         res.jsonp(vehicle);
     })
 };
-
