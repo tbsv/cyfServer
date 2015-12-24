@@ -7,7 +7,7 @@ module.exports = {
     getAllVehicles: function () {
 
         // MongoDB collection vehicles
-        var collection = db.collection('vehicles');
+        var collectionVehicles = db.collection('vehicles');
 
         // ReADiConnect vehicles
         unirest.get('http://readi.mi.hdm-stuttgart.de/exist/apps/readi/vehicles')
@@ -16,7 +16,7 @@ module.exports = {
                 var data = JSON.parse(response.body);
                 var vehicles = data[0].VINS;
                 for (var vehicle in vehicles) {
-                    collection.update(
+                    collectionVehicles.update(
                         {vin: vehicles[vehicle]},
                         {vin: vehicles[vehicle]},
                         { upsert: true }
