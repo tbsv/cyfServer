@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/cyf');
+mongoose.connect('mongodb://localhost/xyz');
 var db = mongoose.connection;
 
 // MongoDB connection logs
