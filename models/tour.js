@@ -13,7 +13,8 @@ var tourSchema = new Schema({
             gpsLongitude: Array
         }
     },
-    ecoScore: {
+    ecoScoreAverage: Number,
+    ecoScoreDetails: {
         accelaration: Number,
         breaking: Number,
         driving: Number
@@ -24,7 +25,7 @@ var tourSchema = new Schema({
     kickdowns: Number,
     fullBreakings: Number,
     fuelAverage: Number,
-    user_id: String, /* the foreign key for the user as driver of a tour - default is 'guest' */
+    user_id: { type: String, required: true}, /* the foreign key for the user as driver of a tour - default is 'guest' */
     vehicle_id: String /* the foreign key for the vehicle, maybe vin (first data) is not really required  */
 
 });

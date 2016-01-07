@@ -4,7 +4,10 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     _id: { type: String, required: true},
     password: { type: String, required: true},
-    name: { type: String, required: true},
+    name: {
+        first: String,
+        last: String
+    },
     role: { type: String, required: true},
     speedfence: Number,
     geofence: String

@@ -24,24 +24,53 @@ app.use('/tours', tours);
 
 
 // BEGIN -------------------- Default Filling of DB ----------------------
-//First: create a default user
-var User = require('./models/user');
-var newUser = new User({
-    _id: 'ronald.henger@student.reutlingen-university.de',
+// 1.: create a default user master user
+var User1 = require('./models/user');
+var newUser1 = new User1({
+    _id: 'Tobi',
     password: 'blub',
-    name: 'Ronald',
+    name: {
+        first: 'Tobias',
+        last: 'Vetter'
+    },
     role: 'master',
-    speedfence: 120,
+    speedfence: 320,
     geofence: "weiss ich auch noch nicht, check maps.google-Api?"
 });
 // save the default user in DB
-newUser.save(function(err) {
+newUser1.save(function(err) {
     if (err) throw err;
-    var defaultUser = User.find({ name: 'Ronald' });
-    console.log('User '+defaultUser+' created!');
+    var Person = require('./models/user');
+    Person.findOne({ 'name.first': 'Tobias' }, function (err, person) {
+        if (err) return handleError(err);
+        console.log('Log1: The user %s with the name %s %s is a new User with the role "%s".', person._id, person.name.first, person.name.last, person.role);
+    });
 });
 
-//Second: create a default vehicle
+// 2.: create a default child user
+var User2 = require('./models/user');
+var newUser2 = new User2({
+    _id: 'Ronaldo',
+    password: 'blob',
+    name: {
+        first: 'Ronald',
+        last: 'Henger'
+    },
+    role: 'child',
+    speedfence: 300,
+    geofence: "weiss ich auch noch nicht, check maps.google-Api?"
+});
+// save the default user in DB
+newUser2.save(function(err) {
+    if (err) throw err;
+    var Person = require('./models/user');
+    Person.findOne({ 'name.last': 'Henger' }, function (err, person) {
+        if (err) return handleError(err);
+        console.log('Log2: The user %s with the name %s %s is a new User with the role "%s".', person._id, person.name.first, person.name.last, person.role);
+    });
+});
+
+// 3.: create a default vehicle
 var Vehicle = require('./models/vehicle');
 var newVehicle = new Vehicle({
   _id: 'WDD2122061B140828',
@@ -51,11 +80,14 @@ var newVehicle = new Vehicle({
 //save the defaut vehicle in DB
 newVehicle.save(function (err) {
     if (err) throw err;
-    var defaultVehicle = Vehicle.find({ _id: 'WDD2122061B140828' });
-    console.log('Vehicle '+defaultVehicle+' created!');
+    var Car = require('./models/vehicle');
+    Car.findOne({ '_id': 'WDD2122061B140828' }, function (err, car) {
+        if (err) return handleError(err);
+        console.log('Log3: The car %s is a new Vehicle.', car._id);
+    });
 });
 
-//Third: create a tour for the vehicle above
+// 4.: create a tour for the vehicle above
 var Tour = require('./models/tour');
 var newTour = new Tour({
     vin: 'WDD2122061B140828',
@@ -69,7 +101,8 @@ var newTour = new Tour({
             gpsLongitude: []
         }
     },
-    ecoScore: {
+    ecoScoreAverage: 52,
+    ecoScoreDetails: {
         accelaration: 45,
         breaking: 33,
         driving: 17
@@ -80,14 +113,17 @@ var newTour = new Tour({
     kickdowns: 1,
     fullBreakings: 4,
     fuelAverage: "9.3",
-    user_id: 'ronald.henger@student.reutlingen-university.de',
+    user_id: 'Ronaldo',
     vehicle_id: 'WDD2122061B140828'
 });
 //save the defaut tour in DB
 newTour.save(function (err) {
     if (err) throw err;
-    var defaultTour = Tour.find({ vin: 'WDD2122061B140828' });
-    console.log('Tour '+defaultTour +' created!');
+    var Trip = require('./models/tour');
+    Trip.findOne({ 'vin': 'WDD2122061B140828' }, function (err, trip) {
+        if (err) return handleError(err);
+        console.log('Log4: The trip with the car %s started at %s is a new tour driven by %s.', trip.vin, trip.timestampStart, trip.user_id);
+    });
 });
 
 
