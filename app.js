@@ -3,13 +3,15 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var jwt = require('jwt-simple');
 var db = require('./models/db');
 var users = require('./routes/users');
 var vehicles = require('./routes/vehicles');
 var tours = require('./routes/tours');
 var readiService = require('./services/readiService');
-var CronJobVehicles = require('cron').CronJob;
-var CronJobTours = require('cron').CronJob;
+// var CronJobVehicles = require('cron').CronJob;
+// var CronJobTours = require('cron').CronJob;
 
 var app = express();
 
@@ -18,11 +20,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// AUTHENTICATION with PASSPORT.JS
+app.use(passport.initialize());
+
+// ROUTES for REST API
 app.use('/users', users);
 app.use('/vehicles', vehicles);
 app.use('/tours', tours);
 
-
+/*
 // BEGIN -------------------- Default Filling of DB ----------------------
 // 1.: create a default user master user
 var User1 = require('./models/user');
@@ -134,6 +140,7 @@ newTour.save(function (err) {
 // db.vehicles.remove({});
 
 // END -------------------- Default Filling of DB ----------------------
+*/
 
 // TODO: @Tobias: siehe Comment darunter
 // @Tobias: Ich denke wir müssen nicht die Fahrzeuge abfragen. Die Fahrzeuge oder besser gesagt das Fahrzeug müsste
