@@ -80,7 +80,13 @@ exports.update = function(req, res){
 
 exports.show = function(req, res){
     User.load(req.params.userId, function(err, user){
-        res.jsonp(user);
+        if (!user) {
+            return res.status(404).send({success: false, msg: 'User not found.'});
+        } else {
+            //delete user.password before response
+            user.password = undefined;
+            return res.jsonp(user);
+        }
     })
 };
 

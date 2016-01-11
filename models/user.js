@@ -38,7 +38,7 @@ userSchema.pre('save', function (next) {
 
 userSchema.statics = {
     load: function(id, cb){
-        this.findOne({userId: id}).exec(cb);
+        this.findOne({_id: id}).exec(cb);
     }
 };
 
