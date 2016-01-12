@@ -19,7 +19,7 @@ router.post('/signup', users.signup);
 /* POST -> get user authentication */
 router.post('/auth', users.authenticate);
 
-/* POST -> update existing user */
-router.post('/update', users.update);
+/* PUT -> update existing user */
+router.put('/update/:userId', users.update);
 
 module.exports = router;

@@ -79,7 +79,21 @@ exports.userinfo = function(req, res){
 };
 
 exports.update = function(req, res){
-    res.json({success: true, msg: 'Updated user.'});
+    User.findByIdAndUpdate(req.params.userId, req.body, function(err, user){
+        if (!user) {
+            return res.status(404).send({success: false, msg: 'User not found.'});
+        } else {
+            User.load(req.params.userId, function(err, user){
+                if (!user) {
+                    return res.status(404).send({success: false, msg: 'User not found.'});
+                } else {
+                    //delete user.password before response
+                    user.password = undefined;
+                    return res.jsonp(user);
+                }
+            })
+        }
+    })
 };
 
 exports.show = function(req, res){
