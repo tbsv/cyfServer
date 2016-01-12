@@ -9,7 +9,7 @@ var userSchema = new Schema({
         first: String,
         last: String
     },
-    email: String,
+    vin: String,
     role: { type: String, default: "guest"},
     updated: { type: Date, default: Date.now },
     speedfence: { type: Number, default: null },
