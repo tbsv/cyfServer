@@ -21,7 +21,11 @@ exports.signup = function(req, res){
         var newUser = new User({
             _id: req.body.name,
             password: req.body.password,
-            email: req.body.email
+            name: {
+                first: req.body.firstname,
+                last: req.body.lastname
+            },
+            role: req.body.role
         });
         // save the user
         newUser.save(function(err) {
