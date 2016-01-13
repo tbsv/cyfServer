@@ -13,8 +13,14 @@ router.get('/userinfo', passport.authenticate('jwt', { session: false}), users.u
 /* SHOW /users/userId */
 router.get('/:userId', users.show);
 
+/* SHOW /users/family/vehicleId */
+router.get('/family/:vehicleId', users.family);
+
 /* POST -> create new user */
 router.post('/signup', users.signup);
+
+/* POST -> create new family member */
+router.post('/family', users.createMember);
 
 /* POST -> get user authentication */
 router.post('/auth', users.authenticate);

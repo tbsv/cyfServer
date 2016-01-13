@@ -37,6 +37,30 @@ exports.signup = function(req, res){
     }
 };
 
+exports.createMember = function(req, res){
+    if (!req.body.name) {
+        res.json({success: false, msg: 'Please pass member name.'});
+    } else {
+        var newUser = new User({
+            _id: req.body.name,
+            password: req.body.password,
+            name: {
+                first: req.body.firstname,
+                last: req.body.lastname
+            },
+            role: req.body.role,
+            vin: req.body.vin
+        });
+        // save the user
+        newUser.save(function(err) {
+            if (err) {
+                return res.json({success: false, msg: 'Username already exists.'});
+            }
+            res.json({success: true, msg: 'Successful created new member.'});
+        });
+    }
+};
+
 exports.authenticate = function(req, res){
     User.findOne({
         _id: req.body.name
@@ -106,6 +130,28 @@ exports.show = function(req, res){
             return res.jsonp(user);
         }
     })
+};
+
+exports.family = function(req, res){
+    var vehicleId = {
+        vin: req.params.vehicleId
+    };
+
+    User.find(vehicleId, function(err, users){
+        if (!users) {
+            return res.status(404).send({success: false, msg: 'Members not found.'});
+        } else {
+            //delete user.password before response
+            //user.password = undefined;
+            return res.jsonp(users);
+        }
+    })
+
+    /*
+    User.find(req.params.vehicleId).exec(function(err, users){
+        res.jsonp(users);
+    });
+    */
 };
 
 // Get Token out of Authorization Header
