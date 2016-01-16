@@ -26,6 +26,32 @@ exports.readi = function(req, res){
         });
 };
 
+exports.checkReadi = function(req, res){
+
+    var vin = req.params.vehicleId;
+
+    var isInArray = function(value, array) {
+        return array.indexOf(value) > -1;
+    };
+
+    // ReADiConnect vehicles
+    unirest.get('http://readi.mi.hdm-stuttgart.de/exist/apps/readi/vehicles')
+        .header('Accept', 'application/json')
+        .end(function (response) {
+            var data = JSON.parse(response.body);
+            var readiVehicles = data[0].VINS;
+            var vehicles = [];
+            for (var readiVehicle in readiVehicles) {
+                vehicles.push(readiVehicles[readiVehicle]);
+            };
+
+            if (!isInArray(vin, vehicles)) {
+                return res.status(404).send({success: false, msg: 'VIN does not exists.'});
+            }
+            res.json({success: true, msg: 'VIN is valid.'});
+        });
+};
+
 exports.post = function(req, res){
     if (!req.body.vin) {
         res.json({success: false, msg: 'Please pass vin.'});
@@ -49,11 +75,11 @@ exports.post = function(req, res){
 exports.update = function(req, res){
     Vehicle.findByIdAndUpdate(req.params.vehicleId, req.body, function(err, vehicle){
         if (!vehicle) {
-            return res.status(404).send({success: false, msg: 'Vehicle not found. A'});
+            return res.status(404).send({success: false, msg: 'Vehicle not found.'});
         } else {
             Vehicle.load(req.params.vehicleId, function(err, vehicle){
                 if (!vehicle) {
-                    return res.status(404).send({success: false, msg: 'Vehicle not found. B'});
+                    return res.status(404).send({success: false, msg: 'Vehicle not found.'});
                 } else {
                     return res.jsonp(vehicle);
                 }

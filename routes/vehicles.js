@@ -3,11 +3,14 @@ var router = express.Router();
 
 var vehicles = require('../controllers/vehicleController');
 
-/* GET /vehicles */
+/* GET -> get all vehicles */
 router.get('/', vehicles.get);
 
-/* GET /vehicles of ReADiConnect */
+/* GET -> get all vehicles of ReADiConnect */
 router.get('/readi', vehicles.readi);
+
+/* GET -> check specific vehicle with ReADiConnect */
+router.get('/readi/:vehicleId', vehicles.checkReadi);
 
 /* SHOW /vehicles/vehicleId */
 router.get('/:vehicleId', vehicles.show);
