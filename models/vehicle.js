@@ -4,13 +4,12 @@ var Schema = mongoose.Schema;
 var vehicleSchema = new Schema({
     _id: { type: String, required: true},
     regTimestamp: { type: Date, required: true},
-    //TODO user_id sollte ein Array sein, da ein Fahrzeug mehrere User haben kann, jedoch nur 1 Master-User
-    user_id: { type: String, required: true}
+    userId: { type: String, required: true}
 });
 
 vehicleSchema.statics = {
     load: function(id, cb){
-        this.findOne({vin: id}).exec(cb);
+        this.findOne({_id: id}).exec(cb);
     }
 };
 

@@ -6,10 +6,16 @@ var vehicles = require('../controllers/vehicleController');
 /* GET /vehicles */
 router.get('/', vehicles.get);
 
-/* SHOW /vehicles/123456789 */
+/* GET /vehicles of ReADiConnect */
+router.get('/readi', vehicles.readi);
+
+/* SHOW /vehicles/vehicleId */
 router.get('/:vehicleId', vehicles.show);
 
-/* POST /vehicles */
+/* POST -> create new vehicle */
 router.post('/', vehicles.post);
+
+/* PUT -> update existing vehicle */
+router.put('/update/:vehicleId', vehicles.update);
 
 module.exports = router;
