@@ -2,16 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var tourSchema = new Schema({
-    vin: { type: String, required: true},
     route: {
         timestampStart: Date,
         timestampStop: Date,
         routeDistance: Number,
         routeDuration: Number,
-        drivenRoute: {
-            gpsLatitude: Array,
-            gpsLongitude: Array
-        }
+        drivenRoute: [{
+            gpsLatitude: String,
+            gpsLongitude: String
+        }]
     },
     ecoScoreAverage: Number,
     ecoScoreDetails: {
@@ -25,14 +24,14 @@ var tourSchema = new Schema({
     kickdowns: Number,
     fullBreakings: Number,
     fuelAverage: Number,
-    user_id: { type: String, required: true}, /* the foreign key for the user as driver of a tour - default is 'guest' */
-    vehicle_id: String /* the foreign key for the vehicle, maybe vin (first data) is not really required  */
+    userId: { type: String, required: true}, /* the foreign key for the user as driver of a tour - default is 'guest' */
+    vehicleId: { type: String, required: true} /* the foreign key for the vehicle, maybe vin (first data) is not really required  */
 
 });
 
 tourSchema.statics = {
     load: function(id, cb){
-        this.findOne({timestamp: id}).exec(cb);
+        this.findOne({_id: id}).exec(cb);
     }
 };
 

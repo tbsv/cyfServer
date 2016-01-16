@@ -146,12 +146,6 @@ exports.family = function(req, res){
             return res.jsonp(users);
         }
     })
-
-    /*
-    User.find(req.params.vehicleId).exec(function(err, users){
-        res.jsonp(users);
-    });
-    */
 };
 
 // Get Token out of Authorization Header

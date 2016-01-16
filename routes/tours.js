@@ -6,10 +6,16 @@ var tours = require('../controllers/tourController');
 /* GET /tours */
 router.get('/', tours.get);
 
-/* SHOW /tours/123456789 */
+/* SHOW /tours/tourId */
 router.get('/:tourId', tours.show);
 
-/* POST /tours */
+/* SHOW /tours/family/vehicleId */
+router.get('/family/:vehicleId', tours.family);
+
+/* POST -> create new tour */
 router.post('/', tours.post);
+
+/* PUT -> update existing tour */
+router.put('/update/:tourId', tours.update);
 
 module.exports = router;

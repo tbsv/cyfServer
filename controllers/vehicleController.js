@@ -27,12 +27,6 @@ exports.readi = function(req, res){
 };
 
 exports.post = function(req, res){
-    /*
-    var vehicle = new Vehicle(req.body);
-    vehicle.save();
-    res.jsonp(vehicle);
-    */
-
     if (!req.body.vin) {
         res.json({success: false, msg: 'Please pass vin.'});
     } else {
