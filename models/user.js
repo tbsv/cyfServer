@@ -12,8 +12,12 @@ var userSchema = new Schema({
     vin: String,
     role: { type: String, default: "guest"},
     updated: { type: Date, default: Date.now },
-    speedfence: { type: Number, default: null },
-    geofence: { type: String, default: null }
+    geofence: {
+        latitude: String,
+        longitude: String,
+        radius: String
+    },
+    speedfence: { type: Number, default: null }
 });
 
 userSchema.pre('save', function (next) {

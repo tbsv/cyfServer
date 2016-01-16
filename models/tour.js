@@ -20,7 +20,7 @@ var tourSchema = new Schema({
         driving: Number
     },
     speedfenceAlerts: Number,
-    geofenceAlerts: Number,
+    geofenceAlerts: Boolean,
     espAlerts: Number,
     kickdowns: Number,
     fullBreakings: Number,
