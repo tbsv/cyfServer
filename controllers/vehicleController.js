@@ -46,9 +46,9 @@ exports.checkReadi = function(req, res){
             };
 
             if (!isInArray(vin, vehicles)) {
-                return res.status(404).send({success: false, msg: 'VIN does not exists.'});
+                return res.json({success: false, msg: 'VIN does not exists.'});
             }
-            res.json({success: true, msg: 'VIN is valid.'});
+            res.json({success: true, msg: 'Successful enrolled VIN.'});
         });
 };
 
