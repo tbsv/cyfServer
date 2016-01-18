@@ -75,16 +75,16 @@ newUser2.save(function(err) {
         console.log('Log2: The user %s with the name %s %s is a new User with the role "%s".', person._id, person.name.first, person.name.last, person.role);
     });
 });
-
+*/
 // 3.: create a default vehicle
-var Vehicle = require('./models/vehicle');
-var newVehicle = new Vehicle({
+var Vehicle1 = require('./models/vehicle');
+var newVehicle1 = new Vehicle1({
   _id: 'WDD2122061B140828',
   regTimestamp: new Date(),
-  user_id: 'ronald.henger@student.reutlingen-university.de'
+  user_id: 'x'
 });
 //save the defaut vehicle in DB
-newVehicle.save(function (err) {
+newVehicle1.save(function (err) {
     if (err) throw err;
     var Car = require('./models/vehicle');
     Car.findOne({ '_id': 'WDD2122061B140828' }, function (err, car) {
@@ -92,7 +92,23 @@ newVehicle.save(function (err) {
         console.log('Log3: The car %s is a new Vehicle.', car._id);
     });
 });
-
+// 3.: create a default vehicle
+var Vehicle2 = require('./models/vehicle');
+var newVehicle2 = new Vehicle2({
+  _id: 'WDD1179421N250123',
+  regTimestamp: new Date(),
+  user_id: 'y'
+});
+//save the defaut vehicle in DB
+newVehicle2.save(function (err) {
+  if (err) throw err;
+  var Car = require('./models/vehicle');
+  Car.findOne({ '_id': 'WDD1179421N250123' }, function (err, car) {
+    if (err) return handleError(err);
+    console.log('Log5: The car %s is a new Vehicle.', car._id);
+  });
+});
+/*
 // 4.: create a tour for the vehicle above
 var Tour = require('./models/tour');
 var newTour = new Tour({
