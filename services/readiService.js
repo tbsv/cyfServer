@@ -132,12 +132,15 @@ module.exports = {
             tour.route.drivenRoute.gpsLongitude = cyf[12].split(",");
             tour.route.speed = cyf[5].split(",");
             tour.ecoScoreTotal = cyf[1];
-            tour.ecoScoreDetails.accelaration = cyf[4];
+            tour.ecoScoreDetails.acceleration = cyf[4];
             tour.ecoScoreDetails.constancy = cyf[3];
             tour.ecoScoreDetails.freeWheeling = cyf[2];
             tour.kickdowns = cyf[6];
             tour.fullBreakings = cyf[7];
-            tour.userId = "guest";
+            tour.espAlerts = 0; // value not available
+            tour.geofenceAlerts = false; // default
+            tour.speedfenceAlerts = 0;  // default
+            tour.userId = "guest"; // default
             tour.vehicleId = vehicleId;
 
             var upsertData = tour.toObject();

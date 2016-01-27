@@ -15,7 +15,7 @@ var tourSchema = new Schema({
     },
     ecoScoreTotal: Number,
     ecoScoreDetails: {
-        accelaration: Number,
+        acceleration: Number,
         constancy: Number,
         freeWheeling: Number
     },
