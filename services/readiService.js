@@ -117,20 +117,42 @@ module.exports = {
             tour.route.routeDistance = cyf[10];
             tour.route.routeDuration = cyf[14];
 
-            if (cyf[13].substr(cyf[13].length-1) == ",") {
-                cyf[13] = cyf[13].substr(0, cyf[13].length-1);
-            }
-            if (cyf[12].substr(cyf[12].length-1) == ",") {
-                cyf[12] = cyf[12].substr(0, cyf[12].length-1);
+            // prevent empty data
+            if (cyf[13] == null) {
+                cyf[13] = [];
+            } else {
+                // remove last character and split values into array
+                if (cyf[13].substr(cyf[13].length - 1) == ",") {
+                    cyf[13] = cyf[13].substr(0, cyf[13].length - 1);
+                    cyf[13] = cyf[13].split(",")
+                }
             }
 
-            if (cyf[5].substr(cyf[5].length-1) == ",") {
-                cyf[5] = cyf[5].substr(0, cyf[5].length-1);
+            // prevent empty data
+            if (cyf[12] == null) {
+                cyf[12] = [];
+            } else {
+                // remove last character and split values into array
+                if (cyf[12].substr(cyf[12].length - 1) == ",") {
+                    cyf[12] = cyf[12].substr(0, cyf[12].length - 1);
+                    cyf[12] = cyf[12].split(",");
+                }
             }
 
-            tour.route.drivenRoute.gpsLatitude = cyf[13].split(",");
-            tour.route.drivenRoute.gpsLongitude = cyf[12].split(",");
-            tour.route.speed = cyf[5].split(",");
+            // prevent empty data
+            if (cyf[5] == null) {
+                cyf[5] = [];
+            } else {
+                // remove last character and split values into array
+                if (cyf[5].substr(cyf[5].length-1) == ",") {
+                    cyf[5] = cyf[5].substr(0, cyf[5].length-1);
+                    cyf[5] = cyf[5].split(",");
+                }
+            }
+
+            tour.route.drivenRoute.gpsLatitude = cyf[13];
+            tour.route.drivenRoute.gpsLongitude = cyf[12];
+            tour.route.speed = cyf[5];
             tour.ecoScoreTotal = cyf[1];
             tour.ecoScoreDetails.acceleration = cyf[4];
             tour.ecoScoreDetails.constancy = cyf[3];
