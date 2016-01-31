@@ -7,16 +7,17 @@ var tourSchema = new Schema({
         timestampStop: Date,
         routeDistance: Number,
         routeDuration: Number,
-        drivenRoute: [{
-            gpsLatitude: String,
-            gpsLongitude: String
-        }]
+        drivenRoute: {
+            gpsLatitude: Array,
+            gpsLongitude: Array
+        },
+        speed: Array,
     },
-    ecoScoreAverage: Number,
+    ecoScoreTotal: Number,
     ecoScoreDetails: {
-        accelaration: Number,
-        breaking: Number,
-        driving: Number
+        acceleration: Number,
+        constancy: Number,
+        freeWheeling: Number
     },
     speedfenceAlerts: Number,
     geofenceAlerts: Boolean,

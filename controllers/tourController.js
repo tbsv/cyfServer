@@ -3,6 +3,7 @@ require('../models/tour');
 
 var mongoose = require('mongoose');
 var Tour = mongoose.model("Tour");
+var User = mongoose.model("User");
 
 exports.get = function(req, res){
     Tour.find().exec(function(err, tours){
@@ -42,6 +43,7 @@ exports.update = function(req, res){
                 if (!tour) {
                     return res.status(404).send({success: false, msg: 'Tour not found.'});
                 } else {
+                    checkSpeedfence(tour);
                     return res.jsonp(tour);
                 }
             })
@@ -71,4 +73,35 @@ exports.family = function(req, res){
             return res.jsonp(tours);
         }
     })
+};
+
+// Check Speedfence and update Speedfence Alerts for tour
+checkSpeedfence = function(tour) {
+
+    User.load(tour.userId, function(err, user){
+        if (!user) {
+            // nothing
+        } else {
+            var speedCount = 0;
+
+            if (user.speedfence != null) {
+                for(var i = 0; i < tour.route.speed.length; ++i){
+                    if(tour.route.speed[i-1] <= user.speedfence && tour.route.speed[i] > user.speedfence)
+                        speedCount++;
+                }
+            }
+
+            var speedfenceAlerts = {speedfenceAlerts: speedCount};
+
+            Tour.findByIdAndUpdate(tour._id, speedfenceAlerts, function(err, tour){
+                if (!tour) {
+                    console.log("Tour not found.");
+                } else {
+                    console.log("Updated speedfenceAlerts ("+ speedCount +  ") for " + tour.userId + ".");
+                }
+            });
+
+        }
+    });
+
 };
