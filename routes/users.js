@@ -4,6 +4,13 @@ var router = express.Router();
 var users = require('../controllers/userController');
 var passport = require('passport');
 
+/* Enable CORS */
+router.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
+
 /* GET -> get all users */
 router.get('/', users.get);
 

@@ -3,6 +3,13 @@ var router = express.Router();
 
 var vehicles = require('../controllers/vehicleController');
 
+/* Enable CORS */
+router.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
+
 /* GET -> get all vehicles */
 router.get('/', vehicles.get);
 
