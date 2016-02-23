@@ -9,6 +9,7 @@ var db = require('./models/db');
 var users = require('./routes/users');
 var vehicles = require('./routes/vehicles');
 var tours = require('./routes/tours');
+var alerts = require('./routes/alerts');
 var readiService = require('./services/readiService');
 // var CronJobVehicles = require('cron').CronJob;
 // var CronJobTours = require('cron').CronJob;
@@ -27,6 +28,7 @@ app.use(passport.initialize());
 app.use('/users', users);
 app.use('/vehicles', vehicles);
 app.use('/tours', tours);
+app.use('/alerts', alerts);
 
 // BEGIN -------------------- CronJobs for ReADi ----------------------
 
