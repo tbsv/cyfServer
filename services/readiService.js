@@ -84,8 +84,10 @@ module.exports = {
                 .header('Accept', 'application/json')
                 .end(function (response) {
                     var dataLdc = JSON.parse(response.body);
-                    var xml = dataLdc[0].LDCXML;
-                    ldcinfo(vehicleId, tourId, xml);
+                    if (dataLdc[0] != null) {
+                        var xml = dataLdc[0].LDCXML;
+                        ldcinfo(vehicleId, tourId, xml);
+                    }
                 });
 
         }
