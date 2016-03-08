@@ -116,6 +116,8 @@ module.exports = {
 
             tour.route.timestampStart = ldc.LdcStartTimestamp;
             tour.route.timestampStop = ldc.LdcEndTimestamp;
+            tour.route.mileageStart = cyf[8];
+            tour.route.mileageStop = cyf[9];
             tour.route.routeDistance = cyf[10];
             tour.route.routeDuration = cyf[14];
 
@@ -161,6 +163,8 @@ module.exports = {
             tour.ecoScoreDetails.freeWheeling = cyf[2];
             tour.kickdowns = cyf[6];
             tour.fullBreakings = cyf[7];
+            tour.fuelAverage = cyf[11];
+            tour.fuelTotal = cyf[0];
             tour.espAlerts = 0; // value not available
             tour.geofenceAlerts = false; // default
             tour.speedfenceAlerts = 0;  // default
