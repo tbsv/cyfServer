@@ -1,9 +1,10 @@
 var db = require('../models/db');
 var unirest = require('unirest');
 require('../models/vehicle');
-
 var mongoose = require('mongoose');
 var Vehicle = mongoose.model("Vehicle");
+
+var readiService = require('../services/readiService');
 
 exports.get = function(req, res){
     Vehicle.find().exec(function(err, vehicles){
@@ -56,17 +57,37 @@ exports.post = function(req, res){
     if (!req.body.vin) {
         res.json({success: false, msg: 'Please pass vin.'});
     } else {
+
+        // Set default reqTimestamp for valid results
+        if (req.body.vin == 'WDD1179421N250123') {
+            // mhenger ab 14.02.2016
+            var validTimestamp = '2016-02-14T00:00:00.000Z';
+        } else if (req.body.vin == 'WDD1179121N355937') {
+            // rhenger CLA ab 01.03.2016
+            var validTimestamp = '2016-03-08T00:00:00.000Z';
+        } else if (req.body.vin == 'WDD2122061B140828') {
+            // rhenger E-Kombi ab 14.02.2016 bis 25.02.2016!
+            var validTimestamp = '2016-02-14T00:00:00.000Z';
+        } else if (req.body.vin == 'WDD2074361F331979') {
+            // bquattelbaum E-Cabrio ab 09.03.2016
+            var validTimestamp = '2016-03-09T00:00:00.000Z';
+        } else {
+            var validTimestamp = new Date();
+        }
+
         var newVehicle = new Vehicle({
             _id: req.body.vin,
-            regTimestamp: new Date(),
+            regTimestamp: validTimestamp,
             userId: req.body.userId
         });
+
         // save the Vehicle
         newVehicle.save(function(err) {
             if (err) {
                 return res.json({success: false, msg: 'There was a problem saving the vehicle.'});
             }
             res.json({success: true, msg: 'Successful created new vehicle.'});
+            readiService.getAllTours();
         });
     }
 

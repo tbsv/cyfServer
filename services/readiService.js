@@ -1,10 +1,10 @@
 var db = require('../models/db');
+require('../models/tour');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
 var unirest = require('unirest');
 var dateFormat = require('dateformat');
 var Tour = mongoose.model("Tour");
-require('../models/tour');
 
 module.exports = {
     getAllVehicles: function () {
