@@ -5,6 +5,8 @@ var tourSchema = new Schema({
     route: {
         timestampStart: Date,
         timestampStop: Date,
+        mileageStart: Number,
+        mileageStop: Number,
         routeDistance: Number,
         routeDuration: Number,
         drivenRoute: {
@@ -25,6 +27,7 @@ var tourSchema = new Schema({
     kickdowns: Number,
     fullBreakings: Number,
     fuelAverage: Number,
+    fuelTotal: Number,
     userId: { type: String, required: true}, /* the foreign key for the user as driver of a tour - default is 'guest' */
     vehicleId: { type: String, required: true} /* the foreign key for the vehicle, maybe vin (first data) is not really required  */
 
