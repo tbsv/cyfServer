@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 var vehicleSchema = new Schema({
     _id: { type: String, required: true},
     regTimestamp: { type: Date, required: true},
-    userId: { type: String, required: true}
-    //licence number { type: String, required: true}
+    userId: { type: String, required: true},
+    licenceNumber: { type: String, required: true}
 });
 
 vehicleSchema.statics = {

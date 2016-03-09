@@ -30,7 +30,6 @@ var tourSchema = new Schema({
     fuelTotal: Number,
     userId: { type: String, required: true}, /* the foreign key for the user as driver of a tour - default is 'guest' */
     vehicleId: { type: String, required: true} /* the foreign key for the vehicle, maybe vin (first data) is not really required  */
-
 });
 
 tourSchema.statics = {
