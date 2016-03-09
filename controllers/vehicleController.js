@@ -49,7 +49,7 @@ exports.checkReadi = function(req, res){
             if (!isInArray(vin, vehicles)) {
                 return res.json({success: false, msg: 'VIN does not exists.'});
             }
-            res.json({success: true, msg: 'Successful enrolled VIN.'});
+            res.json({success: true, msg: 'Your inserted VIN was successful enrolled to you.'});
         });
 };
 
@@ -64,7 +64,7 @@ exports.post = function(req, res){
             var validTimestamp = '2016-02-14T00:00:00.000Z';
         } else if (req.body.vin == 'WDD1179121N355937') {
             // rhenger CLA ab 01.03.2016
-            var validTimestamp = '2016-03-08T00:00:00.000Z';
+            var validTimestamp = '2016-03-07T00:00:00.000Z';
         } else if (req.body.vin == 'WDD2122061B140828') {
             // rhenger E-Kombi ab 14.02.2016 bis 25.02.2016!
             var validTimestamp = '2016-02-14T00:00:00.000Z';
@@ -78,6 +78,7 @@ exports.post = function(req, res){
         var newVehicle = new Vehicle({
             _id: req.body.vin,
             regTimestamp: validTimestamp,
+            licenceNumber: req.body.licenceNumber,
             userId: req.body.userId
         });
 
