@@ -13,9 +13,9 @@ var userSchema = new Schema({
     role: { type: String, default: "guest"},
     updated: { type: Date, default: Date.now },
     geofence: {
-        latitude: String,
-        longitude: String,
-        radius: String
+        latitude: { type: String, default: "48.67965" },
+        longitude: { type: String, default: "8.998960" },
+        radius: { type: String, default: "500" }
     },
     speedfence: { type: Number, default: null },
     geofenceActive: {type: Boolean, default: false},
