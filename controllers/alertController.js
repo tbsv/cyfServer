@@ -36,3 +36,33 @@ exports.show = function(req, res){
         }
     })
 };
+
+exports.family = function(req, res){
+    var vehicleId = {
+        vehicleId: req.params.vehicleId
+    };
+
+    Alert.find(vehicleId, function(err, alerts){
+        if (!alerts) {
+            return res.status(404).send({success: false, msg: 'Alerts not found.'});
+        } else {
+            return res.jsonp(alerts);
+        }
+    })
+};
+
+exports.update = function(req, res){
+    Alert.findByIdAndUpdate(req.params.alertId, req.body, function(err, alert){
+        if (!alert) {
+            return res.status(404).send({success: false, msg: 'Alert not found.'});
+        } else {
+            Alert.load(req.params.alertId, function(err, alert){
+                if (!alert) {
+                    return res.status(404).send({success: false, msg: 'Alert not found.'});
+                } else {
+                    return res.jsonp(alert);
+                }
+            })
+        }
+    })
+};
