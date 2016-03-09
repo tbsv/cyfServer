@@ -1,7 +1,9 @@
 var db = require('../models/db');
+require('../models/alert');
 require('../models/tour');
 
 var mongoose = require('mongoose');
+var Alert = mongoose.model("Alert");
 var Tour = mongoose.model("Tour");
 var User = mongoose.model("User");
 
@@ -94,12 +96,35 @@ checkSpeedfence = function(tour) {
                 }
             }
 
-            var speedfenceAlerts = {speedfenceAlerts: speedCount};
+            var speedfenceUpdate = {
+                speedfenceAlerts: speedCount,
+                speedfenceValue: user.speedfence
+            };
 
-            Tour.findByIdAndUpdate(tour._id, speedfenceAlerts, function(err, tour){
+            Tour.findByIdAndUpdate(tour._id, speedfenceUpdate, function(err, tour){
                 if (!tour) {
                     console.log("Tour not found.");
                 } else {
+
+                    var newSpeedfenceAlert = new Alert({
+                        route: {
+                            timestampStart: tour.route.timestampStart,
+                            timestampStop: tour.route.timestampStop,
+                        },
+                        type: 'speedfence',
+                        vehicleId: tour.vehicleId,
+                        tourId: tour._id,
+                        userId: tour.userId
+                    });
+
+                    // save the Vehicle
+                    newSpeedfenceAlert.save(function(err) {
+                        if (err) {
+                            // return res.json({success: false, msg: 'There was a problem saving the vehicle.'});
+                        }
+                        //res.json({success: true, msg: 'Successful created new vehicle.'});
+                    });
+
                     console.log("Updated speedfenceAlerts ("+ speedCount +  ") for " + tour.userId + ".");
                 }
             });
@@ -142,9 +167,16 @@ checkGeofence = function(tour) {
                 }
             }
 
-            var geofenceAlerts = {geofenceAlerts: geofenceViolation};
+            var geofenceUpdate = {
+                geofenceAlerts: geofenceViolation,
+                geofenceValue: {
+                    latitude: user.geofence.latitude,
+                    longitude: user.geofence.longitude,
+                    radius: user.geofence.radius
+                }
+            };
 
-            Tour.findByIdAndUpdate(tour._id, geofenceAlerts, function(err, tour){
+            Tour.findByIdAndUpdate(tour._id, geofenceUpdate, function(err, tour){
                 if (!tour) {
                     console.log("Tour not found.");
                 } else {

@@ -23,6 +23,12 @@ var tourSchema = new Schema({
     },
     speedfenceAlerts: Number,
     geofenceAlerts: Boolean,
+    speedfenceValue: { type: Number, default: 0 },
+    geofenceValue: {
+        latitude: { type: String, default: null },
+        longitude: { type: String, default: null },
+        radius: { type: String, default: null }
+    },
     espAlerts: Number,
     kickdowns: Number,
     fullBreakings: Number,
