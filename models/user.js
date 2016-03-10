@@ -17,7 +17,7 @@ var userSchema = new Schema({
         longitude: { type: String, default: "8.998960" },
         radius: { type: String, default: "500" }
     },
-    speedfence: { type: Number, default: null },
+    speedfence: { type: Number, default: 0 },
     geofenceActive: {type: Boolean, default: false},
     speedfenceActive: {type: Boolean, default: false}
 });

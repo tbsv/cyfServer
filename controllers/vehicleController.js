@@ -112,6 +112,10 @@ exports.update = function(req, res){
 
 exports.show = function(req, res){
     Vehicle.load(req.params.vehicleId, function(err, vehicle){
-        res.jsonp(vehicle);
+        if (!vehicle) {
+            return res.status(404).send({success: false, msg: 'Vehicle not found.'});
+        } else {
+            return res.jsonp(vehicle);
+        }
     })
 };

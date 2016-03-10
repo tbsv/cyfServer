@@ -10,7 +10,7 @@ var vehicleSchema = new Schema({
 
 vehicleSchema.statics = {
     load: function(id, cb){
-        this.findOne({vin: id}).exec(cb);
+        this.findOne({_id: id}).exec(cb);
     }
 };
 
