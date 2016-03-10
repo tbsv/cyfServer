@@ -117,12 +117,12 @@ checkSpeedfence = function(tour) {
                         userId: tour.userId
                     });
 
-                    // save the Vehicle
+                    // save the speedfence alert
                     newSpeedfenceAlert.save(function(err) {
                         if (err) {
-                            // return res.json({success: false, msg: 'There was a problem saving the vehicle.'});
+                            //return res.json({success: false, msg: 'There was a problem saving the alert.'});
                         }
-                        //res.json({success: true, msg: 'Successful created new vehicle.'});
+                        //res.json({success: true, msg: 'Successful created new speedfence alert.'});
                     });
 
                     console.log("Updated speedfenceAlerts ("+ speedCount +  ") for " + tour.userId + ".");
@@ -139,7 +139,7 @@ checkGeofence = function(tour) {
 
     User.load(tour.userId, function(err, user){
         if (!user) {
-            // nothing
+            console.log("User not found.");
         } else {
             var geofenceViolation = false;
 
@@ -180,6 +180,26 @@ checkGeofence = function(tour) {
                 if (!tour) {
                     console.log("Tour not found.");
                 } else {
+
+                    var newGeofenceAlert = new Alert({
+                        route: {
+                            timestampStart: tour.route.timestampStart,
+                            timestampStop: tour.route.timestampStop,
+                        },
+                        type: 'geofence',
+                        vehicleId: tour.vehicleId,
+                        tourId: tour._id,
+                        userId: tour.userId
+                    });
+
+                    // save the geofence alert
+                    newGeofenceAlert.save(function(err) {
+                        if (err) {
+                            //return res.json({success: false, msg: 'There was a problem saving the alert.'});
+                        }
+                        //res.json({success: true, msg: 'Successful created new geofence alert.'});
+                    });
+
                     console.log("Updated geofenceAlerts (" + geofenceViolation + ") for " + tour.userId + ".");
                 }
             });
