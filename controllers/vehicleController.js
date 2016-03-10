@@ -63,14 +63,11 @@ exports.post = function(req, res){
             // mhenger ab 14.02.2016
             var validTimestamp = '2016-02-14T00:00:00.000Z';
         } else if (req.body.vin == 'WDD1179121N355937') {
-            // rhenger CLA ab 01.03.2016
+            // rhenger CLA ab 07.03.2016
             var validTimestamp = '2016-03-07T00:00:00.000Z';
         } else if (req.body.vin == 'WDD2122061B140828') {
-            // rhenger E-Kombi ab 14.02.2016 bis 25.02.2016!
-            var validTimestamp = '2016-02-14T00:00:00.000Z';
-        } else if (req.body.vin == 'WDD2074361F331979') {
-            // bquattelbaum E-Cabrio ab 09.03.2016
-            var validTimestamp = '2016-03-09T00:00:00.000Z';
+            // rhenger E-Kombi ab 02.02.2016 bis 25.02.2016!
+            var validTimestamp = '2016-02-02T00:00:00.000Z';
         } else {
             var validTimestamp = new Date();
         }
