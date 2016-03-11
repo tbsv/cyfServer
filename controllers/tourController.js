@@ -9,7 +9,7 @@ var Tour = mongoose.model("Tour");
 var User = mongoose.model("User");
 var Vehicle = mongoose.model("Vehicle");
 
-var haversine = require('haversine');
+var haversine = require('haversine-distance')
 
 exports.get = function(req, res){
     Tour.find().exec(function(err, tours){
@@ -49,8 +49,21 @@ exports.update = function(req, res){
                 if (!tour) {
                     return res.status(404).send({success: false, msg: 'Tour not found.'});
                 } else {
-                    checkSpeedfence(tour);
-                    checkGeofence(tour);
+
+                    // Check if fences are active and check violation
+                    User.load(tour.userId, function(err, user) {
+                        if (!user) {
+                            // nothing
+                        } else {
+                            if (user.speedfenceActive) {
+                                checkSpeedfence(tour);
+                            }
+                            if (user.geofenceActive) {
+                                checkGeofence(tour);
+                            }
+                        }
+                    });
+
                     return res.jsonp(tour);
                 }
             })
@@ -103,88 +116,90 @@ checkSpeedfence = function(tour) {
                 speedfenceValue: user.speedfence
             };
 
-            Tour.findByIdAndUpdate(tour._id, speedfenceUpdate, function(err, tour){
-                if (!tour) {
-                    console.log("Tour not found.");
-                } else {
+            if (speedCount > 0) {
+                Tour.findByIdAndUpdate(tour._id, speedfenceUpdate, function(err, tour){
+                    if (!tour) {
+                        console.log("Tour not found.");
+                    } else {
 
-                    var newSpeedfenceAlert = new Alert({
-                        route: {
-                            timestampStart: tour.route.timestampStart,
-                            timestampStop: tour.route.timestampStop,
-                        },
-                        type: 'speedfence',
-                        vehicleId: tour.vehicleId,
-                        tourId: tour._id,
-                        userId: tour.userId
-                    });
-
-                    // save the speedfence alert
-                    newSpeedfenceAlert.save(function(err) {
-                        if (err) {
-                            //return res.json({success: false, msg: 'There was a problem saving the alert.'});
-                        }
-
-                        // get the master user for vehicle
-                        Vehicle.load(tour.vehicleId, function(err, vehicle) {
-                            if (!vehicle) {
-                                // nothing
-                            } else {
-                                var pushMaster = vehicle.userId;
-
-                                var pushNotificationMaster = {
-                                    "app_id": "634f161c-9936-462f-89a9-9b8a389a7cdf",
-                                    "contents": {
-                                        "en": tour.userId + " violated the speedfence"
-                                    },
-                                    "tags": [
-                                        {
-                                            "key": "userId",
-                                            "relation": "=",
-                                            "value": pushMaster
-                                        }
-                                    ]
-                                };
-
-                                var pushNotificationChild = {
-                                    "app_id": "634f161c-9936-462f-89a9-9b8a389a7cdf",
-                                    "contents": {
-                                        "en": "You violated the speedfence"
-                                    },
-                                    "tags": [
-                                        {
-                                            "key": "userId",
-                                            "relation": "=",
-                                            "value": tour.userId
-                                        }
-                                    ]
-                                };
-
-                                // Push notification for master
-                                unirest.post('https://onesignal.com/api/v1/notifications')
-                                    .header({'Content-Type': 'application/json', 'Authorization': 'Basic YmJmODdjMGItNDMzYi00MDcyLWJlMGQtMDg3ZTZiMjNiNDhk'})
-                                    .send(pushNotificationMaster)
-                                    .end(function (response) {
-                                        console.log(response.body);
-                                    });
-
-                                // Push notification for child
-                                unirest.post('https://onesignal.com/api/v1/notifications')
-                                    .header({'Content-Type': 'application/json', 'Authorization': 'Basic YmJmODdjMGItNDMzYi00MDcyLWJlMGQtMDg3ZTZiMjNiNDhk'})
-                                    .send(pushNotificationChild)
-                                    .end(function (response) {
-                                        console.log(response.body);
-                                    });
-
-
-                            }
+                        var newSpeedfenceAlert = new Alert({
+                            route: {
+                                timestampStart: tour.route.timestampStart,
+                                timestampStop: tour.route.timestampStop,
+                            },
+                            type: 'speedfence',
+                            vehicleId: tour.vehicleId,
+                            tourId: tour._id,
+                            userId: tour.userId
                         });
 
-                    });
+                        // save the speedfence alert
+                        newSpeedfenceAlert.save(function(err) {
+                            if (err) {
+                                //return res.json({success: false, msg: 'There was a problem saving the alert.'});
+                            }
 
-                    console.log("Updated speedfenceAlerts ("+ speedCount +  ") for " + tour.userId + ".");
-                }
-            });
+                            // get the master user for vehicle
+                            Vehicle.load(tour.vehicleId, function(err, vehicle) {
+                                if (!vehicle) {
+                                    // nothing
+                                } else {
+                                    var pushMaster = vehicle.userId;
+
+                                    var pushNotificationMaster = {
+                                        "app_id": "634f161c-9936-462f-89a9-9b8a389a7cdf",
+                                        "contents": {
+                                            "en": tour.userId + " violated the speedfence"
+                                        },
+                                        "tags": [
+                                            {
+                                                "key": "userId",
+                                                "relation": "=",
+                                                "value": pushMaster
+                                            }
+                                        ]
+                                    };
+
+                                    var pushNotificationChild = {
+                                        "app_id": "634f161c-9936-462f-89a9-9b8a389a7cdf",
+                                        "contents": {
+                                            "en": "You violated the speedfence"
+                                        },
+                                        "tags": [
+                                            {
+                                                "key": "userId",
+                                                "relation": "=",
+                                                "value": tour.userId
+                                            }
+                                        ]
+                                    };
+
+                                    // Push notification for master
+                                    unirest.post('https://onesignal.com/api/v1/notifications')
+                                        .header({'Content-Type': 'application/json', 'Authorization': 'Basic YmJmODdjMGItNDMzYi00MDcyLWJlMGQtMDg3ZTZiMjNiNDhk'})
+                                        .send(pushNotificationMaster)
+                                        .end(function (response) {
+                                            console.log(response.body);
+                                        });
+
+                                    // Push notification for child
+                                    unirest.post('https://onesignal.com/api/v1/notifications')
+                                        .header({'Content-Type': 'application/json', 'Authorization': 'Basic YmJmODdjMGItNDMzYi00MDcyLWJlMGQtMDg3ZTZiMjNiNDhk'})
+                                        .send(pushNotificationChild)
+                                        .end(function (response) {
+                                            console.log(response.body);
+                                        });
+
+
+                                }
+                            });
+
+                        });
+
+                        console.log("Updated speedfenceAlerts ("+ speedCount +  ") for " + tour.userId + ".");
+                    }
+                });
+            }
 
         }
     });
@@ -214,7 +229,9 @@ checkGeofence = function(tour) {
                         longitude: user.geofence.longitude
                     };
 
+
                     var distanceMeter = haversine(tourLocation, geofenceMarker);
+                    console.log(distanceMeter);
 
                     // If Geofence violated, set value to true
                     if (distanceMeter <= user.geofence.radius) {
