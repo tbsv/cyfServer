@@ -1,4 +1,5 @@
 var db = require('../models/db');
+var unirest = require('unirest');
 require('../models/alert');
 require('../models/tour');
 
@@ -6,6 +7,7 @@ var mongoose = require('mongoose');
 var Alert = mongoose.model("Alert");
 var Tour = mongoose.model("Tour");
 var User = mongoose.model("User");
+var Vehicle = mongoose.model("Vehicle");
 
 var haversine = require('haversine');
 
@@ -122,7 +124,62 @@ checkSpeedfence = function(tour) {
                         if (err) {
                             //return res.json({success: false, msg: 'There was a problem saving the alert.'});
                         }
-                        //res.json({success: true, msg: 'Successful created new speedfence alert.'});
+
+                        // get the master user for vehicle
+                        Vehicle.load(tour.vehicleId, function(err, vehicle) {
+                            if (!vehicle) {
+                                // nothing
+                            } else {
+                                var pushMaster = vehicle.userId;
+
+                                var pushNotificationMaster = {
+                                    "app_id": "634f161c-9936-462f-89a9-9b8a389a7cdf",
+                                    "contents": {
+                                        "en": tour.userId + " violated the speedfence"
+                                    },
+                                    "tags": [
+                                        {
+                                            "key": "userId",
+                                            "relation": "=",
+                                            "value": pushMaster
+                                        }
+                                    ]
+                                };
+
+                                var pushNotificationChild = {
+                                    "app_id": "634f161c-9936-462f-89a9-9b8a389a7cdf",
+                                    "contents": {
+                                        "en": "You violated the speedfence"
+                                    },
+                                    "tags": [
+                                        {
+                                            "key": "userId",
+                                            "relation": "=",
+                                            "value": tour.userId
+                                        }
+                                    ]
+                                };
+
+                                // Push notification for master
+                                unirest.post('https://onesignal.com/api/v1/notifications')
+                                    .header({'Content-Type': 'application/json', 'Authorization': 'Basic YmJmODdjMGItNDMzYi00MDcyLWJlMGQtMDg3ZTZiMjNiNDhk'})
+                                    .send(pushNotificationMaster)
+                                    .end(function (response) {
+                                        console.log(response.body);
+                                    });
+
+                                // Push notification for child
+                                unirest.post('https://onesignal.com/api/v1/notifications')
+                                    .header({'Content-Type': 'application/json', 'Authorization': 'Basic YmJmODdjMGItNDMzYi00MDcyLWJlMGQtMDg3ZTZiMjNiNDhk'})
+                                    .send(pushNotificationChild)
+                                    .end(function (response) {
+                                        console.log(response.body);
+                                    });
+
+
+                            }
+                        });
+
                     });
 
                     console.log("Updated speedfenceAlerts ("+ speedCount +  ") for " + tour.userId + ".");
