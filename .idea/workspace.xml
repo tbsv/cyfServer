@@ -564,7 +564,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457788807616</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="neues Datum für WDD212.">
+      <created>1457788818555</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1457788818555</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TodoView">
