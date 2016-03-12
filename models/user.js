@@ -19,7 +19,8 @@ var userSchema = new Schema({
     },
     speedfence: { type: Number, default: 0 },
     geofenceActive: {type: Boolean, default: false},
-    speedfenceActive: {type: Boolean, default: false}
+    speedfenceActive: {type: Boolean, default: false},
+    termsOfUseAgreed: {type: Boolean, default: false}
 });
 
 userSchema.pre('save', function (next) {
