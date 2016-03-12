@@ -570,7 +570,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457788818555</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Neues Flag für termsOfUseAgreed">
+      <created>1457788894401</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1457788894401</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -630,7 +636,8 @@
     <MESSAGE value="Licence number + Datum eines Fahrzeugs geändert." />
     <MESSAGE value="Bens E-Cabrio rausgenommen." />
     <MESSAGE value="neues Datum für WDD212." />
-    <option name="LAST_COMMIT_MESSAGE" value="neues Datum für WDD212." />
+    <MESSAGE value="Neues Flag für termsOfUseAgreed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Neues Flag für termsOfUseAgreed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
