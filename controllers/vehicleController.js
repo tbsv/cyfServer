@@ -49,7 +49,7 @@ exports.checkReadi = function(req, res){
             if (!isInArray(vin, vehicles)) {
                 return res.json({success: false, msg: 'VIN does not exists.'});
             }
-            res.json({success: true, msg: 'Your inserted VIN was successful enrolled to you.'});
+            res.json({success: true, msg: 'VIN is available and ready to use.'});
         });
 };
 
@@ -82,9 +82,9 @@ exports.post = function(req, res){
         // save the Vehicle
         newVehicle.save(function(err) {
             if (err) {
-                return res.json({success: false, msg: 'There was a problem saving the vehicle.'});
+                return res.json({success: false, msg: 'Vehicle is already enrolled.'});
             }
-            res.json({success: true, msg: 'Successful created new vehicle.'});
+            res.json({success: true, msg: 'Successful enrolled vehicle.'});
             readiService.getAllTours();
         });
     }
